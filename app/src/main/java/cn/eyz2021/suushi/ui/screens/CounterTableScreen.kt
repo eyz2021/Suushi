@@ -66,9 +66,8 @@ fun CounterTableScreen(
                             rowItems.forEach { item ->
                                 CounterCell(
                                     item = item,
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clickable { audioHelper.playAudio(item.audioResName) }
+                                    onClick = { audioHelper.playAudio(item.audioResName) },
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
                             if (rowItems.size == 1) {
@@ -83,24 +82,34 @@ fun CounterTableScreen(
 }
 
 @Composable
-fun CounterCell(item: CounterItem, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .padding(4.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.shapes.small)
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+fun CounterCell(
+    item: CounterItem,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        onClick = onClick,
+        modifier = modifier.padding(4.dp),
+        shape = MaterialTheme.shapes.small,
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Text(
-            text = item.number,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-        Text(
-            text = item.reading,
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 14.sp
-        )
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+        ) {
+            Text(
+                text = item.number,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+            Text(
+                text = item.reading,
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 14.sp
+            )
+        }
     }
 }

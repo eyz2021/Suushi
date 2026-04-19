@@ -48,7 +48,32 @@ val sampleData = listOf(
             CounterItem("何", "なんじ", "h_nan")
         )
     ),
-    CounterGroup(title = "人", items = emptyList()),
+    CounterGroup(
+        title = "人",
+        items = listOf(
+            CounterItem("1", "ひとり", "p01"),
+            CounterItem("2", "ふたり", "p02"),
+            CounterItem("3", "さんにん", "p03"),
+            CounterItem("4", "よにん", "p04"),
+            CounterItem("5", "ごにん", "p05"),
+            CounterItem("6", "ろくにん", "p06"),
+            CounterItem("7", "しち/ななにん", "p07"),
+            CounterItem("8", "はちにん", "p08"),
+            CounterItem("9", "きゅうにん", "p09"),
+            CounterItem("10", "じゅうにん", "p10"),
+            CounterItem("11", "じゅういちにん", "p11"),
+            CounterItem("12", "じゅうににん", "p12"),
+            CounterItem("13", "じゅうさんにん", "p13"),
+            CounterItem("14", "じゅうよにん", "p14"),
+            CounterItem("15", "じゅうごにん", "p15"),
+            CounterItem("16", "じゅうろくにん", "p16"),
+            CounterItem("17", "じゅうしち/ななにん", "p17"),
+            CounterItem("18", "じゅうはちにん", "p18"),
+            CounterItem("19", "じゅうきゅうにん", "p19"),
+            CounterItem("20", "にじゅうにん", "p20"),
+            CounterItem("何", "なんにん", "p_nan")
+        )
+    ),
     CounterGroup(title = "階", items = emptyList()),
     CounterGroup(title = "週間", items = emptyList()),
     CounterGroup(title = "分", items = emptyList())

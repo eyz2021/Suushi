@@ -119,19 +119,32 @@ fun QuizScreen() {
 
     fun checkAnswer() {
         if (userInput.isBlank() || currentPair == null) return
-        val isAnswerCorrect = userInput.trim() == currentPair!!.first.reading
+        
+        val input = userInput.trim()
+        val item = currentPair!!.first
+        val category = currentPair!!.second
+        
+        // 直接硬编码处理 7 和 17 的特殊情况，确保 100% 正确
+        val possibleAnswers = when {
+            category == "人" && item.number == "7" -> listOf("しちにん", "ななにん")
+            category == "人" && item.number == "17" -> listOf("じゅうしちにん", "じゅうななにん")
+            item.reading.contains("/") -> item.reading.split("/")
+            else -> listOf(item.reading)
+        }
+        
+        val isAnswerCorrect = input in possibleAnswers
         
         if (isAnswerCorrect) {
             feedback = "正确！"
             isCorrect = true
         } else {
-            feedback = "错误，正确答案是：${currentPair!!.first.reading}"
+            feedback = "错误，正确答案是：${possibleAnswers.joinToString(" 或 ")}"
             isCorrect = false
         }
 
         // 自动播放发音逻辑
         if (autoPlayAudio) {
-            audioHelper.playAudio(currentPair?.first?.audioResName)
+            audioHelper.playAudio(item.audioResName)
         }
     }
 
