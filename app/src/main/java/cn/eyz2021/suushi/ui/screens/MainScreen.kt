@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,9 +16,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import cn.eyz2021.suushi.model.CounterGroup
 import cn.eyz2021.suushi.model.sampleData
+import cn.eyz2021.suushi.util.t
 
 @Composable
-fun MainScreen() {
+fun MainScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit) {
     var currentTab by remember { mutableIntStateOf(0) }
     var selectedGroup by remember { mutableStateOf<CounterGroup?>(null) }
 
@@ -36,22 +38,26 @@ fun MainScreen() {
                     NavigationBarItem(
                         selected = currentTab == 0,
                         onClick = { currentTab = 0 },
-                        icon = { Icon(Icons.Default.List, contentDescription = "对照表") },
-                        label = { Text("对照表") }
+                        icon = { Icon(Icons.Default.List, contentDescription = t("tab_table")) },
+                        label = { Text(t("tab_table")) }
                     )
                     NavigationBarItem(
                         selected = currentTab == 1,
                         onClick = { currentTab = 1 },
-                        icon = { Icon(Icons.Default.Star, contentDescription = "测试") },
-                        label = { Text("测试") }
+                        icon = { Icon(Icons.Default.Star, contentDescription = t("tab_quiz")) },
+                        label = { Text(t("tab_quiz")) }
+                    )
+                    NavigationBarItem(
+                        selected = currentTab == 2,
+                        onClick = { currentTab = 2 },
+                        icon = { Icon(Icons.Default.Settings, contentDescription = t("tab_settings")) },
+                        label = { Text(t("tab_settings")) }
                     )
                 }
             }
         },
-        // 关键 1：强制 Scaffold 不自动处理 WindowInsets，防止底部栏出现/消失时内容瞬间位移
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { _ -> 
-        // 关键 2：完全忽略 Scaffold 提供的 innerPadding，手动控制布局稳定性
         Box(modifier = Modifier.fillMaxSize()) {
             AnimatedContent(
                 targetState = currentTab,
@@ -81,7 +87,6 @@ fun MainScreen() {
                             },
                             label = "DrillDownTransition"
                         ) { group ->
-                            // 关键 3：通过固定的 padding 预留底部导航栏空间，确保即使导航栏消失，内容容器的基准线也不动
                             Box(modifier = Modifier.padding(bottom = if (showBottomBar) 80.dp else 0.dp)) {
                                 if (group == null) {
                                     CategoryListScreen(
@@ -101,6 +106,14 @@ fun MainScreen() {
                     1 -> {
                         Box(modifier = Modifier.padding(bottom = 80.dp)) {
                             QuizScreen()
+                        }
+                    }
+                    2 -> {
+                        Box(modifier = Modifier.padding(bottom = 80.dp)) {
+                            SettingsScreen(
+                                onThemeChange = onThemeChange,
+                                onLanguageChange = onLanguageChange
+                            )
                         }
                     }
                 }

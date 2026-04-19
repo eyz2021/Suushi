@@ -21,4 +21,20 @@ class SettingsHelper(context: Context) {
     fun isAutoPlayAudioEnabled(): Boolean {
         return prefs.getBoolean("auto_play_audio", true)
     }
+
+    fun saveThemeMode(mode: Int) {
+        prefs.edit().putInt("theme_mode", mode).apply()
+    }
+
+    fun getThemeMode(): Int {
+        return prefs.getInt("theme_mode", 0) // 0: System, 1: Light, 2: Dark
+    }
+
+    fun saveLanguage(lang: String) {
+        prefs.edit().putString("language", lang).apply()
+    }
+
+    fun getLanguage(): String {
+        return prefs.getString("language", "zh-CN") ?: "zh-CN"
+    }
 }

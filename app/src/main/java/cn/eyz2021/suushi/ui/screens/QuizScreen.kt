@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cn.eyz2021.suushi.model.sampleData
 import cn.eyz2021.suushi.util.AudioHelper
+import cn.eyz2021.suushi.util.LocalTranslation
 import cn.eyz2021.suushi.util.SettingsHelper
+import cn.eyz2021.suushi.util.t
 import kotlin.math.ceil
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,6 +30,7 @@ fun QuizScreen() {
     val context = LocalContext.current
     val settingsHelper = remember { SettingsHelper(context) }
     val audioHelper = remember { AudioHelper(context) }
+    val translationHelper = LocalTranslation.current
     
     // 释放音频资源
     DisposableEffect(Unit) {
@@ -75,20 +78,13 @@ fun QuizScreen() {
     fun pickNextQuestion() {
         if (quizPool.isEmpty()) return
         
-        // 计算冷却期长度：0.4 * 总数，向上取整
         val coolingSize = ceil(quizPool.size * 0.4).toInt()
-        
-        // 过滤掉还在冷却期（最近出现过）的题目
         val availablePool = quizPool.filter { item ->
             historyQueue.none { it.first == item.first && it.second == item.second }
-        }
+        }.ifEmpty { quizPool }
         
-        // 如果可用池为空（理论上只有总数极少时发生），则清空历史重新开始
-        val finalPool = if (availablePool.isEmpty()) quizPool else availablePool
+        val next = availablePool.random()
         
-        val next = finalPool.random()
-        
-        // 更新历史队列
         historyQueue.add(next)
         if (historyQueue.size > coolingSize) {
             historyQueue.removeAt(0)
@@ -102,9 +98,8 @@ fun QuizScreen() {
     // 题库监控与自动刷新
     LaunchedEffect(quizPool) {
         if (quizPool.isNotEmpty()) {
-            // 如果当前题目不在新题库中，或者题库刷新且当前无题，则重新抽题
             if (currentPair == null || quizPool.none { it.first == currentPair?.first && it.second == currentPair?.second }) {
-                historyQueue.clear() // 范围变了，清空历史
+                historyQueue.clear()
                 pickNextQuestion()
             }
         } else {
@@ -117,6 +112,8 @@ fun QuizScreen() {
         pickNextQuestion()
     }
 
+    // 修复：不能在普通函数里直接调用 @Composable 的 t() 函数
+    // 应该使用 translationHelper.translate()
     fun checkAnswer() {
         if (userInput.isBlank() || currentPair == null) return
         
@@ -124,7 +121,6 @@ fun QuizScreen() {
         val item = currentPair!!.first
         val category = currentPair!!.second
         
-        // 直接硬编码处理 7 和 17 的特殊情况，确保 100% 正确
         val possibleAnswers = when {
             category == "人" && item.number == "7" -> listOf("しちにん", "ななにん")
             category == "人" && item.number == "17" -> listOf("じゅうしちにん", "じゅうななにん")
@@ -135,14 +131,13 @@ fun QuizScreen() {
         val isAnswerCorrect = input in possibleAnswers
         
         if (isAnswerCorrect) {
-            feedback = "正确！"
+            feedback = translationHelper.translate("quiz_correct")
             isCorrect = true
         } else {
-            feedback = "错误，正确答案是：${possibleAnswers.joinToString(" 或 ")}"
+            feedback = "${translationHelper.translate("quiz_error")}: ${possibleAnswers.joinToString(" 或 ")}"
             isCorrect = false
         }
 
-        // 自动播放发音逻辑
         if (autoPlayAudio) {
             audioHelper.playAudio(item.audioResName)
         }
@@ -151,18 +146,18 @@ fun QuizScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("数量词拼写测试") },
+                title = { Text(t("tab_quiz")) },
                 actions = {
                     Box {
                         IconButton(onClick = { showSettings = true }) {
-                            Icon(Icons.Default.Settings, contentDescription = "设置")
+                            Icon(Icons.Default.Settings, contentDescription = t("tab_settings"))
                         }
                         DropdownMenu(
                             expanded = showSettings,
                             onDismissRequest = { showSettings = false }
                         ) {
                             Text(
-                                "常规设置：",
+                                t("quiz_settings_general"),
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary
@@ -172,14 +167,14 @@ fun QuizScreen() {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Checkbox(checked = autoPlayAudio, onCheckedChange = null)
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text("作答后自动发音")
+                                        Text(t("quiz_auto_play"))
                                     }
                                 },
                                 onClick = { autoPlayAudio = !autoPlayAudio }
                             )
                             HorizontalDivider()
                             Text(
-                                "选择测试范围：",
+                                t("quiz_settings_range"),
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary
@@ -222,12 +217,12 @@ fun QuizScreen() {
         ) {
             if (quizPool.isEmpty()) {
                 Spacer(modifier = Modifier.height(100.dp))
-                Text("请至少选择一个包含数据的分类")
+                Text(t("quiz_empty_pool"))
             } else if (currentPair != null) {
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Text(
-                    text = "请写出下列词语的读音：",
+                    text = t("quiz_prompt"),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 
@@ -245,7 +240,7 @@ fun QuizScreen() {
                 OutlinedTextField(
                     value = userInput,
                     onValueChange = { userInput = it },
-                    label = { Text("输入假名读音") },
+                    label = { Text(t("quiz_placeholder")) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     enabled = feedback == null,
@@ -266,7 +261,7 @@ fun QuizScreen() {
                         modifier = Modifier.fillMaxWidth(),
                         enabled = userInput.isNotBlank()
                     ) {
-                        Text("提交答案")
+                        Text(t("quiz_check"))
                     }
                 } else {
                     Text(
@@ -282,7 +277,7 @@ fun QuizScreen() {
                         onClick = { nextQuestion() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("下一题")
+                        Text(t("quiz_next"))
                     }
                 }
             }
