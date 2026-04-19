@@ -21,5 +21,12 @@
   "quiz_settings_general": "General:",
   "quiz_settings_range": "Test Range:",
   "quiz_auto_play": "Auto-play after answering",
-  "quiz_empty_pool": "Please select at least one category with data"
+  "quiz_empty_pool": "Please select at least one category with data",
+  "quiz_listening_prompt": "Listen and select the correct counter:",
+  "quiz_settings_types": "Quiz Types:",
+  "quiz_type_spelling": "Spelling",
+  "quiz_type_listening": "Listening",
+  "ui_scale_title": "UI Scale",
+  "ui_scale_label": "Adjust UI scale ratio",
+  "table_main_title": "Counter Usage Table"
 }

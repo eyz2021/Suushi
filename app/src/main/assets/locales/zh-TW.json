@@ -18,8 +18,15 @@
   "quiz_error": "錯誤，正確答案是",
   "quiz_placeholder": "輸入假名讀音",
   "quiz_prompt": "請寫出下列詞語的讀音：",
+  "quiz_listening_prompt": "請聽錄音並選擇正確的數量詞：",
   "quiz_settings_general": "常規設置：",
   "quiz_settings_range": "選擇測試範圍：",
+  "quiz_settings_types": "選擇測試題型：",
+  "quiz_type_spelling": "拼寫練習",
+  "quiz_type_listening": "聽力選擇",
   "quiz_auto_play": "作答後自動發音",
-  "quiz_empty_pool": "請至少選擇一個包含數據的分類"
+  "quiz_empty_pool": "請至少選擇一個包含數據的分類",
+  "ui_scale_title": "界面大小",
+  "ui_scale_label": "調整 UI 縮放比例",
+  "table_main_title": "數、量詞搭配使用表"
 }

@@ -37,4 +37,28 @@ class SettingsHelper(context: Context) {
     fun getLanguage(): String {
         return prefs.getString("language", "zh-CN") ?: "zh-CN"
     }
+
+    fun saveUiScale(scale: Float) {
+        prefs.edit().putFloat("ui_scale", scale).apply()
+    }
+
+    fun getUiScale(): Float {
+        return prefs.getFloat("ui_scale", 1.0f)
+    }
+
+    fun saveSelectedQuizTypes(types: Set<String>) {
+        prefs.edit().putStringSet("selected_quiz_types", types).apply()
+    }
+
+    fun getSelectedQuizTypes(): Set<String> {
+        return prefs.getStringSet("selected_quiz_types", setOf("SPELLING", "LISTENING")) ?: setOf("SPELLING", "LISTENING")
+    }
+
+    fun saveTableColumnCount(count: Int) {
+        prefs.edit().putInt("table_column_count", count).apply()
+    }
+
+    fun getTableColumnCount(): Int {
+        return prefs.getInt("table_column_count", 2)
+    }
 }

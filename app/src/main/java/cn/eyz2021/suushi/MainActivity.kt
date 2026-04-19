@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
             
             var themeTick by remember { mutableIntStateOf(0) }
             var langTick by remember { mutableIntStateOf(0) }
+            var uiScaleTick by remember { mutableIntStateOf(0) }
             
             // 加载语言
             LaunchedEffect(langTick) {
@@ -31,6 +32,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val themeMode = remember(themeTick) { settingsHelper.getThemeMode() }
+            val uiScale = remember(uiScaleTick) { settingsHelper.getUiScale() }
             val darkTheme = when (themeMode) {
                 1 -> false
                 2 -> true
@@ -38,13 +40,20 @@ class MainActivity : ComponentActivity() {
             }
 
             // 提供全局翻译支持
-            CompositionLocalProvider(LocalTranslation provides translationHelper) {
+            CompositionLocalProvider(
+                LocalTranslation provides translationHelper,
+                androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(
+                    density = androidx.compose.ui.platform.LocalDensity.current.density * uiScale,
+                    fontScale = androidx.compose.ui.platform.LocalDensity.current.fontScale * uiScale
+                )
+            ) {
                 // 当语言加载完成后才渲染 UI
                 if (langTick >= 0) { 
                     数詞Theme(darkTheme = darkTheme) {
                         MainScreen(
                             onThemeChange = { themeTick++ },
-                            onLanguageChange = { langTick++ }
+                            onLanguageChange = { langTick++ },
+                            onUiScaleChange = { uiScaleTick++ }
                         )
                     }
                 }

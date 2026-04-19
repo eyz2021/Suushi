@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -20,11 +21,12 @@ import cn.eyz2021.suushi.util.t
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit) {
+fun SettingsScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit, onUiScaleChange: () -> Unit) {
     val context = LocalContext.current
     val settingsHelper = remember { SettingsHelper(context) }
     var themeMode by remember { mutableIntStateOf(settingsHelper.getThemeMode()) }
     var currentLang by remember { mutableStateOf(settingsHelper.getLanguage()) }
+    var uiScale by remember { mutableFloatStateOf(settingsHelper.getUiScale()) }
 
     Scaffold(
         topBar = {
@@ -111,6 +113,44 @@ fun SettingsScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit) {
                             Text(label, modifier = Modifier.padding(start = 8.dp))
                         }
                     }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // UI 缩放设置
+            Text(
+                text = t("ui_scale_title"),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(t("ui_scale_label"))
+                        Text("${"%.1f".format(uiScale)}x", fontWeight = FontWeight.Bold)
+                    }
+                    Slider(
+                        value = uiScale,
+                        onValueChange = { 
+                            uiScale = it
+                        },
+                        onValueChangeFinished = {
+                            settingsHelper.saveUiScale(uiScale)
+                            onUiScaleChange()
+                        },
+                        valueRange = 0.8f..1.2f,
+                        steps = 3 // 0.8, 0.9, 1.0, 1.1, 1.2
+                    )
                 }
             }
 

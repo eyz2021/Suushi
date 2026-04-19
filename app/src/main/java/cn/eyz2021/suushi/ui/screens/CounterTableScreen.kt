@@ -7,10 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.ViewStream
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import cn.eyz2021.suushi.model.CounterGroup
 import cn.eyz2021.suushi.model.CounterItem
 import cn.eyz2021.suushi.util.AudioHelper
+import cn.eyz2021.suushi.util.SettingsHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +28,8 @@ fun CounterTableScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
+    val settingsHelper = remember { SettingsHelper(context) }
+    var columnCount by remember { mutableIntStateOf(settingsHelper.getTableColumnCount()) }
     val audioHelper = remember { AudioHelper(context) }
 
     DisposableEffect(Unit) {
@@ -42,6 +45,17 @@ fun CounterTableScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        columnCount = if (columnCount == 1) 2 else 1
+                        settingsHelper.saveTableColumnCount(columnCount)
+                    }) {
+                        Icon(
+                            imageVector = if (columnCount == 1) Icons.Default.GridView else Icons.Default.ViewStream,
+                            contentDescription = "切换布局"
+                        )
                     }
                 }
             )
@@ -61,7 +75,7 @@ fun CounterTableScreen(
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(group.items.chunked(2)) { rowItems ->
+                    items(group.items.chunked(columnCount)) { rowItems ->
                         Row(modifier = Modifier.fillMaxWidth()) {
                             rowItems.forEach { item ->
                                 CounterCell(
@@ -70,8 +84,10 @@ fun CounterTableScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                             }
-                            if (rowItems.size == 1) {
-                                Spacer(modifier = Modifier.weight(1f))
+                            if (rowItems.size < columnCount) {
+                                repeat(columnCount - rowItems.size) {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
                             }
                         }
                     }

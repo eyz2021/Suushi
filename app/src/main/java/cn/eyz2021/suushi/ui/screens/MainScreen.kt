@@ -19,7 +19,7 @@ import cn.eyz2021.suushi.model.sampleData
 import cn.eyz2021.suushi.util.t
 
 @Composable
-fun MainScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit) {
+fun MainScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit, onUiScaleChange: () -> Unit) {
     var currentTab by remember { mutableIntStateOf(0) }
     var selectedGroup by remember { mutableStateOf<CounterGroup?>(null) }
 
@@ -112,7 +112,8 @@ fun MainScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit) {
                         Box(modifier = Modifier.padding(bottom = 80.dp)) {
                             SettingsScreen(
                                 onThemeChange = onThemeChange,
-                                onLanguageChange = onLanguageChange
+                                onLanguageChange = onLanguageChange,
+                                onUiScaleChange = onUiScaleChange
                             )
                         }
                     }

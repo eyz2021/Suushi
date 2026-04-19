@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cn.eyz2021.suushi.model.CounterGroup
+import cn.eyz2021.suushi.util.t
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,7 +23,7 @@ fun CategoryListScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("数、量词搭配使用表") })
+            TopAppBar(title = { Text(t("table_main_title")) })
         }
     ) { innerPadding ->
         LazyVerticalGrid(

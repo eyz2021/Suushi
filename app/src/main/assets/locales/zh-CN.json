@@ -18,8 +18,15 @@
   "quiz_error": "错误，正确答案是",
   "quiz_placeholder": "输入假名读音",
   "quiz_prompt": "请写出下列词语的读音：",
+  "quiz_listening_prompt": "请听录音并选择正确的数量词：",
   "quiz_settings_general": "常规设置：",
   "quiz_settings_range": "选择测试范围：",
+  "quiz_settings_types": "选择测试题型：",
+  "quiz_type_spelling": "拼写练习",
+  "quiz_type_listening": "听力选择",
   "quiz_auto_play": "作答后自动发音",
-  "quiz_empty_pool": "请至少选择一个包含数据的分类"
+  "quiz_empty_pool": "请至少选择一个包含数据的分类",
+  "ui_scale_title": "界面大小",
+  "ui_scale_label": "调整 UI 缩放比例",
+  "table_main_title": "数、量词搭配使用表"
 }
