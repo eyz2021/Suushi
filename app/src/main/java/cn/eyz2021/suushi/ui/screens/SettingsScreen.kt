@@ -1,14 +1,19 @@
 package cn.eyz2021.suushi.ui.screens
 
 import android.content.Intent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -163,12 +168,38 @@ fun SettingsScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit, onUi
                     .padding(top = 32.dp, bottom = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "数詞 | Suushi",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.outline
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                ) {
+                    // 渲染应用图标
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = "App Icon",
+                            modifier = Modifier.size(48.dp) // Foreground 图标通常有内边距，所以这里稍微放大一点
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.width(12.dp))
+                    
+                    Text(
+                        text = "数詞 | Suushi",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.sp
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
                 Text(
                     text = t("about_desc"),
                     fontSize = 14.sp
@@ -179,7 +210,7 @@ fun SettingsScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit, onUi
                     color = MaterialTheme.colorScheme.outline
                 )
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 
                 IconButton(onClick = {
                     val intent = Intent(Intent.ACTION_VIEW,
