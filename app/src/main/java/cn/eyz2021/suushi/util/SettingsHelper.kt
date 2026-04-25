@@ -61,4 +61,20 @@ class SettingsHelper(context: Context) {
     fun getTableColumnCount(): Int {
         return prefs.getInt("table_column_count", 2)
     }
+
+    fun saveVoiceSource(source: String) {
+        prefs.edit().putString("voice_source", source).apply()
+    }
+
+    fun getVoiceSource(): String {
+        return prefs.getString("voice_source", "BUILTIN") ?: "BUILTIN" // BUILTIN or TTS
+    }
+
+    fun saveTtsEngine(engine: String) {
+        prefs.edit().putString("tts_engine", engine).apply()
+    }
+
+    fun getTtsEngine(): String? {
+        return prefs.getString("tts_engine", null)
+    }
 }

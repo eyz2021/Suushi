@@ -3,15 +3,8 @@
     android:height="108dp"
     android:viewportWidth="100"
     android:viewportHeight="100">
-
-    <!-- 和纸底色 (Creamy Off-white) -->
+    <!-- 暖奶油黄底色 -->
     <path
-        android:fillColor="#FAF9F6"
+        android:fillColor="#FFF9EB"
         android:pathData="M0,0 h100 v100 h-100 z" />
-
-    <!-- 极其微弱的和纸纤维纹理 (Subtle Paper Fibers) -->
-    <path
-        android:strokeColor="#F2F0E9"
-        android:strokeWidth="0.2"
-        android:pathData="M10,15 L15,12 M30,45 L35,48 M70,20 L75,25 M85,60 L80,65 M40,85 L45,80 M20,70 L25,75 M55,30 L60,25 M90,10 L85,15" />
 </vector>

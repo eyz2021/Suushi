@@ -3,6 +3,7 @@
   "tab_table": "Table",
   "tab_quiz": "Quiz",
   "tab_settings": "Settings",
+  "tab_lab": "Lab",
   "settings_title": "Settings",
   "theme_title": "Theme",
   "theme_system": "System",
@@ -28,5 +29,8 @@
   "quiz_type_listening": "Listening",
   "ui_scale_title": "UI Scale",
   "ui_scale_label": "Adjust UI scale ratio",
+  "voice_title": "Voice Source",
+  "voice_builtin": "Built-in Audio",
+  "voice_tts": "System TTS",
   "table_main_title": "Counter Usage Table"
 }

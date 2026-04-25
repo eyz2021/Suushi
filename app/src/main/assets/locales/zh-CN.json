@@ -3,6 +3,7 @@
   "tab_table": "对照表",
   "tab_quiz": "测试",
   "tab_settings": "设置",
+  "tab_lab": "实验室",
   "settings_title": "设置",
   "theme_title": "界面主题",
   "theme_system": "跟随系统",
@@ -28,5 +29,8 @@
   "quiz_empty_pool": "请至少选择一个包含数据的分类",
   "ui_scale_title": "界面大小",
   "ui_scale_label": "调整 UI 缩放比例",
+  "voice_title": "发音来源",
+  "voice_builtin": "内置发音",
+  "voice_tts": "系统 TTS 合成",
   "table_main_title": "数、量词搭配使用表"
 }

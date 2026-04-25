@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
@@ -50,6 +51,12 @@ fun MainScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit, onUiScal
                     NavigationBarItem(
                         selected = currentTab == 2,
                         onClick = { currentTab = 2 },
+                        icon = { Icon(Icons.Default.Science, contentDescription = t("tab_lab")) },
+                        label = { Text(t("tab_lab")) }
+                    )
+                    NavigationBarItem(
+                        selected = currentTab == 3,
+                        onClick = { currentTab = 3 },
                         icon = { Icon(Icons.Default.Settings, contentDescription = t("tab_settings")) },
                         label = { Text(t("tab_settings")) }
                     )
@@ -109,6 +116,11 @@ fun MainScreen(onThemeChange: () -> Unit, onLanguageChange: () -> Unit, onUiScal
                         }
                     }
                     2 -> {
+                        Box(modifier = Modifier.padding(bottom = 80.dp)) {
+                            LabScreen()
+                        }
+                    }
+                    3 -> {
                         Box(modifier = Modifier.padding(bottom = 80.dp)) {
                             SettingsScreen(
                                 onThemeChange = onThemeChange,
